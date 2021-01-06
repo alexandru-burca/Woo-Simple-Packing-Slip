@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Woo Simple Packing Slip
  * Plugin URI: https://getrocketship.com/
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Alex Burca
  * Author URI: https://www.linkedin.com/in/burca-alexandru/
  * Text Domain: woo-order-packing-slip
@@ -20,7 +20,6 @@ defined( 'RK_OPS_NAME' ) or define( 'RK_OPS_NAME', $pluginName[0] );
 
 class WOO_ORDER_PACKING_SLIP{
     function __construct(){
-        add_action( 'admin_enqueue_scripts', array($this, 'enqueue_scripts') );
         add_action( 'add_meta_boxes', array($this, 'add_meta_box') );
         add_action( 'admin_init', array($this, 'generate_csv') );
     }
@@ -44,7 +43,7 @@ class WOO_ORDER_PACKING_SLIP{
             $out = fopen('php://output', 'w');
             fputcsv($out, array('Image', 'SKU', 'UIN', 'PRD_CD', 'Product', 'Quantity', 'Box', 'Pallet'), ',');
             foreach ( $order->get_items() as $item_id => $item ) {
-                $product = wc_get_product($item->get_product_id());
+                $product = $item->get_product();
                 fputcsv($out, array(
                     wp_get_attachment_url( $product->get_image_id() ),
                     $product->get_sku(),
@@ -58,7 +57,6 @@ class WOO_ORDER_PACKING_SLIP{
             }
             exit();
         }
-        wp_die();
     }
 }
 $WOO_ORDER_PACKING_SLIP = new WOO_ORDER_PACKING_SLIP;
