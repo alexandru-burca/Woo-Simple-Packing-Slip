@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Woo Simple Packing Slip
- * Version: 1.2
+ * Version: 1.2.1
  * Author: Alex Burca
  * Author URI: https://www.linkedin.com/in/burca-alexandru/
  * Text Domain: woo-order-packing-slip
@@ -36,7 +36,7 @@ class WOO_ORDER_PACKING_SLIP{
     }
 
     public function handleAddTemplate(){
-        if(! empty( $_POST ) && check_admin_referer('handle_add_template', RK_OPS_DOMAIN)){
+        if(! empty( $_POST ) && wp_verify_nonce($_POST[RK_OPS_DOMAIN], 'handle_add_template')){
             $newTemplate = array();
             foreach($this->header as $item){
                 if(isset($_POST[$item])){
